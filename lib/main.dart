@@ -1,4 +1,5 @@
 import 'package:ecobean_frontend/screens/main_screen.dart';
+import 'package:ecobean_frontend/screens/recycling_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,8 +14,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(),
-      home: MainScreen(),
+      theme: ThemeData(
+        scaffoldBackgroundColor: Color(0xFFFFFCF8),
+      ),
+      home: RecyclingScreen(),
     );
   }
 }
