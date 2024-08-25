@@ -45,5 +45,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>에코콩앱에서 프로필 사진 변경을 위한 갤러리 접근을 허용하시겠습니까?</string>
+    <key>NSCameraUsageDescription</key>
+    <string>에코콩앱에서 프로필 사진 변경을 위한 카메라 접근을 허용하시겠습니까?</string>
 </dict>
 </plist>

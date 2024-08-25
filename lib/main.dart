@@ -1,5 +1,4 @@
-import 'package:ecobean_frontend/screens/login_screen.dart';
-import 'package:ecobean_frontend/screens/onboarding_screen.dart';
+import 'package:ecobean_frontend/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(),
-      home: OnboardingScreen(),
+      home: MainScreen(),
     );
   }
 }

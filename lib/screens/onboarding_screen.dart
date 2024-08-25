@@ -25,19 +25,19 @@ class OnboardingScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF401D1D), // 텍스트 색상
+                  color: Color(0xFF401D1D),
                 ),
               ),
 
               SizedBox(height: 20),
-              
+
               Text(
                 '에코콩',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF6F9978), // 텍스트 색상
+                  color: Color(0xFF6F9978),
                 ),
               ),
             ],
@@ -46,10 +46,4 @@ class OnboardingScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: OnboardingScreen(),
-  ));
 }
