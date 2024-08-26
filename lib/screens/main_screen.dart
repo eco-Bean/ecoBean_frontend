@@ -1,3 +1,4 @@
+import 'package:ecobean_frontend/screens/chatbot_screen.dart';
 import 'package:ecobean_frontend/screens/store_screen.dart';
 import 'package:ecobean_frontend/screens/store_screen.dart';
 import 'package:flutter/material.dart';
@@ -354,7 +355,10 @@ class _MainScreenState extends State<MainScreen> {
             icon: IconButton(
               icon: Icon(Icons.chat, color: Color(0xFF401D1D)),
               onPressed: () {
-                print('채팅 버튼 눌림');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChatbotScreen()),
+                );
               },
             ),
             label: '채팅',
