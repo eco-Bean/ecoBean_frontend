@@ -1,6 +1,8 @@
+import 'package:ecobean_frontend/screens/store_screen.dart';
+import 'package:ecobean_frontend/screens/store_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'mypage_screen.dart';  // MypageScreen으로 이동하기 위해 import
+import 'mypage_screen.dart'; // MypageScreen으로 이동하기 위해 import
 
 class MainScreen extends StatefulWidget {
   @override
@@ -150,7 +152,10 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     title: Text('상점'),
                     onTap: () {
-                      // 상점 화면으로 이동하는 로직
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => StoreScreen()),
+                      );
                     },
                   ),
                 ),
@@ -183,7 +188,6 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
       ),
-
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(

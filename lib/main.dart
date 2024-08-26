@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Color(0xFFFFFCF8),
       ),
-      home: RecyclingScreen(),
+      home: MainScreen(),
     );
   }
 }
