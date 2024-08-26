@@ -156,6 +156,7 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
               Spacer(),
+
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: GestureDetector(
@@ -342,6 +343,7 @@ class _MainScreenState extends State<MainScreen> {
               icon: Icon(Icons.map, color: Color(0xFF401D1D)),
               onPressed: () {
                 print('지도 버튼 눌림');
+
               },
             ),
             label: '지도',
