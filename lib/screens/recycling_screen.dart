@@ -58,41 +58,8 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
           ),
         ),
         centerTitle: true,
-        actions: [
-          Builder(
-            builder: (context) {
-              return IconButton(
-                icon: Icon(Icons.menu, color: Colors.brown),
-                onPressed: () {
-                  Scaffold.of(context).openEndDrawer();
-                },
-              );
-            },
-          ),
-        ],
       ),
-      endDrawer: Drawer(
-        // 사이드바 구현
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.brown,
-              ),
-              child: Text('사이드바 콘텐츠'),
-            ),
-            ListTile(
-              title: Text('옵션 1'),
-              onTap: () {},
-            ),
-            ListTile(
-              title: Text('옵션 2'),
-              onTap: () {},
-            ),
-          ],
-        ),
-      ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
