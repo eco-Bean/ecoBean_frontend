@@ -327,6 +327,7 @@ class _MainScreenState extends State<MainScreen> {
             icon: IconButton(
               icon: Icon(Icons.camera_alt, color: Color(0xFF401D1D)),
               onPressed: _openCamera,
+
             ),
             label: '카메라',
           ),
