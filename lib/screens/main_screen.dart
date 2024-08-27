@@ -4,6 +4,7 @@ import 'package:ecobean_frontend/screens/store_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'mypage_screen.dart'; // MypageScreen으로 이동하기 위해 import
+import 'package:url_launcher/url_launcher.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -20,6 +21,15 @@ class _MainScreenState extends State<MainScreen> {
   Future<void> _openCamera() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.camera);
     // 카메라 찍은 이미지 처리하는 로직
+  }
+
+  void _launchURL() async {
+    const url = 'https://www.naver.com'; // 이동할 링크
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   @override
@@ -198,7 +208,7 @@ class _MainScreenState extends State<MainScreen> {
             Text(
               '일일 미션',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
@@ -249,7 +259,7 @@ class _MainScreenState extends State<MainScreen> {
             Text(
               '지식+',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
@@ -283,31 +293,27 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
             SizedBox(height: 40),
-            Container(
-              height: 120,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.greenAccent,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                  ),
-                ],
-              ),
-              child: Center(
-                child: Text(
-                  '이벤트 배너',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+            GestureDetector(
+              onTap: _launchURL,
+              child: Container(
+                height: 160,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage(
+                          '/Users/jimin/ecoBean_frontend-2/assets/images/event.png'),
+                      fit: BoxFit.cover),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                    ),
+                  ],
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),

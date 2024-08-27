@@ -74,7 +74,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                       if (isEcho) ...[
                         CircleAvatar(
                           backgroundImage:
-                              AssetImage('assets/images/echo.png'), // 에코의 이미지
+                              AssetImage('assets/images/icon.png'), // 에코의 이미지
                           radius: 20,
                         ),
                         SizedBox(width: 10),
