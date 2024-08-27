@@ -301,8 +301,7 @@ class _MainScreenState extends State<MainScreen> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage(
-                          '/Users/jimin/ecoBean_frontend-2/assets/images/event.png'),
+                      image: AssetImage('assets/images/event.png'),
                       fit: BoxFit.cover),
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [

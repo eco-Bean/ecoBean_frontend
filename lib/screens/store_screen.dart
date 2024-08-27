@@ -222,7 +222,7 @@ class _MyWidgetState extends State<StoreScreen> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(40),
                                 child: Image.asset(
-                                  '/Users/jimin/ecoBean_frontend-2/assets/images/icon.png',
+                                  'assets/images/icon.png',
                                   width: 100,
                                   height: 100,
                                   fit: BoxFit.cover,
@@ -272,7 +272,7 @@ class _MyWidgetState extends State<StoreScreen> {
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(40),
                                     child: Image.asset(
-                                      '/Users/jimin/ecoBean_frontend-2/assets/images/change.png',
+                                      'assets/images/change.png',
                                       width: 100,
                                       height: 100,
                                       fit: BoxFit.cover,
@@ -323,7 +323,7 @@ class _MyWidgetState extends State<StoreScreen> {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(40),
                               child: Image.asset(
-                                '/Users/jimin/ecoBean_frontend-2/assets/images/ribbon.png',
+                                'assets/images/ribbon.png',
                                 width: 100,
                                 height: 100,
                                 fit: BoxFit.cover,
