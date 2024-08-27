@@ -59,11 +59,14 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
         ),
         centerTitle: true,
         actions: [
-          IconButton(
-            icon: Icon(Icons.menu, color: Colors.brown),
-            onPressed: () {
-              // 사이드바 열기 로직
-              Scaffold.of(context).openEndDrawer();
+          Builder(
+            builder: (context) {
+              return IconButton(
+                icon: Icon(Icons.menu, color: Colors.brown),
+                onPressed: () {
+                  Scaffold.of(context).openEndDrawer();
+                },
+              );
             },
           ),
         ],
@@ -90,7 +93,6 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
           ],
         ),
       ),
-
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -99,10 +101,10 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
             SizedBox(height: 20),
             _capturedImage != null
                 ? Image.file(
-              File(_capturedImage!.path),
-              height: 200,
-              width: 200,
-            )
+                    File(_capturedImage!.path),
+                    height: 200,
+                    width: 200,
+                  )
                 : Placeholder(fallbackHeight: 200, fallbackWidth: 200),
             SizedBox(height: 20),
             // 데이터베이스에서 가져온 텍스트
@@ -130,11 +132,13 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
                 ElevatedButton.icon(
                   onPressed: _openCamera,
                   icon: Icon(Icons.camera_alt),
-                  label: Text('사진 재업로드',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),),
+                  label: Text(
+                    '사진 재업로드',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.brown,
                     backgroundColor: Color(0xFFFFFAC8),
@@ -151,11 +155,13 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
                     );
                   },
                   icon: Icon(Icons.chat_bubble_outline),
-                  label: Text('챗봇에게 물어보기',
+                  label: Text(
+                    '챗봇에게 물어보기',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
-                    ),),
+                    ),
+                  ),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.brown,
                     backgroundColor: Color(0xFFFFFAC8),
@@ -228,4 +234,3 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
     );
   }
 }
-
