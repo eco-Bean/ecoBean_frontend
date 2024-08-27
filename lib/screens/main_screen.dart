@@ -1,4 +1,5 @@
 import 'package:ecobean_frontend/screens/chatbot_screen.dart';
+import 'package:ecobean_frontend/screens/map_screen.dart';
 import 'package:ecobean_frontend/screens/store_screen.dart';
 import 'package:ecobean_frontend/screens/store_screen.dart';
 import 'package:flutter/material.dart';
@@ -352,7 +353,10 @@ class _MainScreenState extends State<MainScreen> {
             icon: IconButton(
               icon: Icon(Icons.map, color: Color(0xFF401D1D)),
               onPressed: () {
-                print('지도 버튼 눌림');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MapScreen()),
+                );
               },
             ),
             label: '지도',

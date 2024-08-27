@@ -31,6 +31,8 @@ dependencies:
   flutter:
     sdk: flutter
   url_launcher: ^6.1.7
+  
+  flutter_naver_map: ^1.1.1
 
 
 
@@ -68,6 +70,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/images/
+    - assets/map.html
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
