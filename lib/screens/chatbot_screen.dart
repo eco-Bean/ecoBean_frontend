@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 
 class ChatbotScreen extends StatefulWidget {
   const ChatbotScreen({super.key});
@@ -10,6 +14,7 @@ class ChatbotScreen extends StatefulWidget {
 class _ChatbotScreenState extends State<ChatbotScreen> {
   List<Map<String, String>> messages = []; // 채팅 메시지 리스트
   TextEditingController _controller = TextEditingController(); // 텍스트 입력 컨트롤러
+  File? _image; // 선택된 이미지 파일
 
   @override
   void initState() {
@@ -23,14 +28,64 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     });
   }
 
-  void _sendMessage() {
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+
+  Future<void> _sendMessage() async {
     String message = _controller.text.trim();
     if (message.isNotEmpty) {
       setState(() {
         messages.add({'sender': 'user', 'message': message});
         _controller.clear(); // 입력창 비우기
       });
-      _addEchoMessage('에코가 받은 메시지: $message');
+
+      // AI 백엔드로 요청 전송 및 응답 처리
+      try {
+        String responseMessage = await _getAIResponse(message);
+        _addEchoMessage(responseMessage);
+      } catch (e) {
+        _addEchoMessage('에러가 발생했습니다: $e');
+      }
+    }
+  }
+
+  Future<String> _getAIResponse(String message) async {
+    String url =
+        'https://moodoodle.store/chatting/question'; // 서버 URL을 여기에 입력하세요.
+
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    request.fields['chattingQuestion'] = message;
+
+    if (_image != null) {
+      request.files.add(await http.MultipartFile.fromPath(
+        'chattingImage',
+        _image!.path,
+      ));
+    }
+
+    try {
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        var responseBody = await response.stream.bytesToString();
+        var jsonResponse = jsonDecode(responseBody);
+
+        if (jsonResponse['success'] == true) {
+          return jsonResponse['responseDto']['chattingAnswer'];
+        } else {
+          return '에러: ${jsonResponse['error']}';
+        }
+      } else {
+        throw Exception('서버 에러: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('요청 실패: $e');
     }
   }
 
@@ -125,6 +180,11 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                         ),
                       ),
                     ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.image,
+                        color: Color(0xFFFFD67D)), // 이미지 선택 버튼
+                    onPressed: _pickImage,
                   ),
                   IconButton(
                     icon: Icon(Icons.send, color: Color(0xFFFFD67D)),

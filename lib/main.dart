@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: Color(0xFFFFFCF8),
+        fontFamily: 'soyo',
       ),
       home: MainScreen(),
     );
