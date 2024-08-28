@@ -68,6 +68,9 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
         'chattingImage',
         _image!.path,
       ));
+    } else {
+      // 이미지가 없을 때 빈 파일로 설정
+      request.fields['chattingImage'] = '';
     }
 
     try {
