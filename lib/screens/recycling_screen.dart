@@ -1,11 +1,20 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'chatbot_screen.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+
 
 class RecyclingScreen extends StatefulWidget {
+  final XFile? capturedImage;
+
+  RecyclingScreen({Key? key, this.capturedImage}) : super(key: key);
+
+
   @override
   _RecyclingScreenState createState() => _RecyclingScreenState();
 }
@@ -13,6 +22,12 @@ class RecyclingScreen extends StatefulWidget {
 class _RecyclingScreenState extends State<RecyclingScreen> {
   // 메인스크린에서 촬영한 사진을 저장하는 변수
   XFile? _capturedImage;
+
+  @override
+  void initState() {
+    super.initState();
+    _capturedImage = widget.capturedImage;
+  }
 
   // 데이터베이스에서 가져온 텍스트
   String itemDescription = '다이어리';
@@ -27,8 +42,12 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
       setState(() {
         _capturedImage = pickedFile;
       });
+
+      // 이미지 업로드
+      await _uploadImage(pickedFile);
     }
   }
+
 
   // 텍스트 복사 함수
   void _copyToClipboard() {
@@ -37,6 +56,47 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
       SnackBar(content: Text('분리수거 방법이 복사되었습니다.')),
     );
   }
+
+  //이미지 업로드 함수
+  Future<void> _uploadImage(XFile image) async {
+    final url = Uri.parse('https://moodoodle.store/chatting/recycle');
+    final request = http.MultipartRequest('POST', url);
+
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'recycleImage',
+        image.path,
+        contentType: MediaType('image', 'jpeg'),  // MediaType을 사용하여 contentType 지정
+      ),
+    );
+
+    // request에 추가된 모든 파일과 필드를 출력
+    print('Request Headers: ${request.headers}');
+    print('Request Files: ${request.files}');
+    print('Request Fields: ${request.fields}');
+
+    final response = await request.send();
+
+    if (response.statusCode == 200) {
+      final responseBody = await response.stream.bytesToString();
+      final decodedResponse = jsonDecode(responseBody);
+
+      if (decodedResponse['success']) {
+        final recycleAnswer = decodedResponse['responseDto']['recycleAnswer'];
+
+        // recyclingMethod에 서버 응답의 recycleAnswer 값을 할당
+        setState(() {
+          recyclingMethod = recycleAnswer;
+        });
+      } else {
+        // 에러 처리
+        print('Error: ${decodedResponse['error']}');
+      }
+    } else {
+      print('Failed to upload image');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +128,10 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
             SizedBox(height: 20),
             _capturedImage != null
                 ? Image.file(
-                    File(_capturedImage!.path),
-                    height: 200,
-                    width: 200,
-                  )
+              File(_capturedImage!.path),
+              height: 200,
+              width: 200,
+            )
                 : Placeholder(fallbackHeight: 200, fallbackWidth: 200),
             SizedBox(height: 20),
             // 데이터베이스에서 가져온 텍스트
@@ -201,3 +261,5 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
     );
   }
 }
+
+

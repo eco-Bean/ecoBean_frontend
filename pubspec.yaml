@@ -33,6 +33,8 @@ dependencies:
   url_launcher: ^6.1.7
   
   flutter_naver_map: ^1.1.1
+  http: ^1.2.2
+  http_parser: ^4.0.0
 
 
 

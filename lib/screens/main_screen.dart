@@ -1,11 +1,12 @@
 import 'package:ecobean_frontend/screens/chatbot_screen.dart';
+import 'package:ecobean_frontend/screens/recycling_screen.dart';
 import 'package:ecobean_frontend/screens/stamp_screen.dart';
 import 'package:ecobean_frontend/screens/map_screen.dart';
 import 'package:ecobean_frontend/screens/store_screen.dart';
 import 'package:ecobean_frontend/screens/store_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'mypage_screen.dart'; // MypageScreen으로 이동하기 위해 import
+import 'mypage_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MainScreen extends StatefulWidget {
@@ -22,7 +23,15 @@ class _MainScreenState extends State<MainScreen> {
 
   Future<void> _openCamera() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.camera);
-    // 카메라 찍은 이미지 처리하는 로직
+
+    if (pickedFile != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => RecyclingScreen(capturedImage: pickedFile),
+        ),
+      );
+    }
   }
 
   void _launchURL() async {
@@ -333,7 +342,6 @@ class _MainScreenState extends State<MainScreen> {
             icon: IconButton(
               icon: Icon(Icons.camera_alt, color: Color(0xFF401D1D)),
               onPressed: _openCamera,
-
             ),
             label: '카메라',
           ),
