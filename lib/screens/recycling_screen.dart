@@ -28,13 +28,6 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
     super.initState();
     _capturedImage = widget.capturedImage;
     recyclingMethod = widget.recycleAnswer ?? '정보를 불러올 수 없습니다.';
-
-    // 이미지가 전달된 경우 지연 후 업로드 및 응답 처리
-    if (_capturedImage != null) {
-      Future.delayed(Duration.zero, () {
-        _uploadImageAndSetResponse(_capturedImage!);
-      });
-    }
   }
 
     // 데이터베이스에서 가져온 텍스트
