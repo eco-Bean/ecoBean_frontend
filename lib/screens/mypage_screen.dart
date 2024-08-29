@@ -51,8 +51,8 @@ class _MypageScreen extends State<MypageScreen> {
         ),
         centerTitle: true,
       ),
-
-      body: Padding(
+      resizeToAvoidBottomInset: true, // 키보드가 올라올 때 화면을 리사이즈하여 오버플로우 방지
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -69,19 +69,23 @@ class _MypageScreen extends State<MypageScreen> {
             SizedBox(height: 30),
             Stack(
               children: [
-                CircleAvatar(
-                  radius: 50,
-                  backgroundColor: Colors.grey[300],
-                  backgroundImage:
-                  _image != null ? FileImage(File(_image!.path)) : null,
-                  child: _image == null
-                      ? Icon(
-                    Icons.person,
-                    size: 60,
-                    color: Colors.white,
-                  )
-                      : null,
+                GestureDetector(
+                  onTap: _pickImage,
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Colors.grey[300],
+                    backgroundImage:
+                    _image != null ? FileImage(File(_image!.path)) : null,
+                    child: _image == null
+                        ? Icon(
+                      Icons.person,
+                      size: 60,
+                      color: Colors.white,
+                    )
+                        : null,
+                  ),
                 ),
+
                 Positioned(
                   bottom: 0,
                   right: 0,
@@ -92,7 +96,7 @@ class _MypageScreen extends State<MypageScreen> {
                       backgroundColor: Colors.white,
                       child: Icon(
                         Icons.camera_alt,
-                        size: 15,
+                        size: 20,
                         color: Colors.black,
                       ),
                     ),
@@ -121,7 +125,6 @@ class _MypageScreen extends State<MypageScreen> {
               ),
             ),
             SizedBox(height: 20),
-
             TextButton(
               onPressed: () {
                 // 회원탈퇴 로직
@@ -134,7 +137,7 @@ class _MypageScreen extends State<MypageScreen> {
                 ),
               ),
             ),
-            Spacer(),
+            SizedBox(height: 270), // 여유 공간 추가
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -156,7 +159,6 @@ class _MypageScreen extends State<MypageScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 30),
           ],
         ),
       ),

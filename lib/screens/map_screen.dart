@@ -36,25 +36,23 @@ class _MapScreenState extends State<MapScreen> {
           Positioned(
             bottom: 20,
             right: 20,
-            child: Row(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                // 자식 버튼들
                 if (_isExpanded) ...[
-                  _buildFilterButton(Icons.filter_1, () {
-                    print('필터 1 클릭됨');
+                  _buildFilterButton('친환경 매장', () {
+                    print('친환경 매장 클릭됨');
                   }),
-                  SizedBox(width: 10),
-                  _buildFilterButton(Icons.filter_2, () {
-                    print('필터 2 클릭됨');
+                  SizedBox(height: 10),
+                  _buildFilterButton('시장', () {
+                    print('시장 클릭됨');
                   }),
-                  SizedBox(width: 10),
-                  _buildFilterButton(Icons.filter_3, () {
-                    print('필터 3 클릭됨');
+                  SizedBox(height: 10),
+                  _buildFilterButton('전자 영수증', () {
+                    print('전자 영수증 클릭됨');
                   }),
                 ],
-                // 메인 필터 버튼
-                SizedBox(width: 10),
+                SizedBox(height: 10),
                 FloatingActionButton(
                   onPressed: () {
                     setState(() {
@@ -74,15 +72,26 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  Widget _buildFilterButton(IconData icon, VoidCallback onPressed) {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 250),
-      curve: Curves.easeInOut,
-      child: FloatingActionButton(
-        onPressed: onPressed,
-        mini: true,
-        backgroundColor: Color(0xFFFFD67D),
-        child: Icon(icon, color: Colors.white),
+  Widget _buildFilterButton(String text, VoidCallback onPressed) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+        width: 140,
+        decoration: BoxDecoration(
+          color: Color(0xFFFFD67D),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              color: Colors.brown,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
     );
   }

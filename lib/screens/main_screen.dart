@@ -1,11 +1,13 @@
 import 'package:ecobean_frontend/screens/chatbot_screen.dart';
+import 'package:ecobean_frontend/screens/recycling_screen.dart';
 import 'package:ecobean_frontend/screens/stamp_screen.dart';
 import 'package:ecobean_frontend/screens/map_screen.dart';
 import 'package:ecobean_frontend/screens/store_screen.dart';
 import 'package:ecobean_frontend/screens/store_screen.dart';
+import 'package:ecobean_frontend/screens/upload_image_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'mypage_screen.dart'; // MypageScreen으로 이동하기 위해 import
+import 'mypage_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MainScreen extends StatefulWidget {
@@ -22,7 +24,58 @@ class _MainScreenState extends State<MainScreen> {
 
   Future<void> _openCamera() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.camera);
-    // 카메라 찍은 이미지 처리하는 로직
+
+    if (pickedFile != null) {
+        // 팝업 띄우기
+        showDialog(
+          context: context,
+          barrierDismissible: false, // 팝업 바깥을 터치해도 닫히지 않도록 설정
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xFFFFFAC8),
+              content: Row(
+                children: [
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.brown),
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: Text(
+                      '에코가 열심히 분석해드릴게요.\n잠시만 기다려 주세요!',
+                      style: TextStyle(color: Colors.brown),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+
+        try {
+          final recycleAnswer = await uploadImageAndGetResponse(pickedFile);
+
+          // 팝업 닫기
+          Navigator.of(context).pop();
+
+          // 팝업이 완전히 닫힌 후에 라우팅 수행
+          await Future.delayed(Duration(milliseconds: 300)); // 지연 추가
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RecyclingScreen(
+                capturedImage: pickedFile,
+                recycleAnswer: recycleAnswer,
+              ),
+            ),
+          );
+        } catch (e) {
+          // 에러 처리
+          Navigator.of(context).pop();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('이미지 업로드에 실패했습니다. 다시 시도해 주세요.')),
+          );
+        }
+    }
   }
 
   void _launchURL() async {
@@ -71,15 +124,26 @@ class _MainScreenState extends State<MainScreen> {
               SizedBox(height: 150), // 상단 간격 추가
               Stack(
                 children: [
-                  CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Colors.grey,
-                    child: Icon(
-                      Icons.person,
-                      size: 50,
-                      color: Colors.white,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MypageScreen(),
+                        ),
+                      );
+                    },
+                    child: CircleAvatar(
+                      radius: 40,
+                      backgroundColor: Colors.grey,
+                      child: Icon(
+                        Icons.person,
+                        size: 50,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
+
                   Positioned(
                     bottom: 0,
                     right: 0,
