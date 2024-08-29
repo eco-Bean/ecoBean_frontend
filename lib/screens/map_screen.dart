@@ -39,21 +39,26 @@ class _MapScreenState extends State<MapScreen> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                // 자식 버튼들
-                if (_isExpanded) ...[
-                  _buildFilterButton(Icons.filter_1, () {
-                    print('필터 1 클릭됨');
-                  }),
-                  SizedBox(width: 10),
-                  _buildFilterButton(Icons.filter_2, () {
-                    print('필터 2 클릭됨');
-                  }),
-                  SizedBox(width: 10),
-                  _buildFilterButton(Icons.filter_3, () {
-                    print('필터 3 클릭됨');
-                  }),
-                ],
-                // 메인 필터 버튼
+                if (_isExpanded)
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal, // 가로 스크롤 가능하도록 설정
+                    child: Row(
+                      children: [
+                        _buildFilterButton('친환경 매장', () {
+                          print('친환경 매장 클릭됨');
+                        }),
+                        SizedBox(width: 10),
+                        _buildFilterButton('시장', () {
+                          print('시장 클릭됨');
+                        }),
+                        SizedBox(width: 10),
+                        _buildFilterButton('전자 영수증', () {
+                          print('전자 영수증 클릭됨');
+                        }),
+                        // 필요한 만큼 추가 버튼 생성 가능
+                      ],
+                    ),
+                  ),
                 SizedBox(width: 10),
                 FloatingActionButton(
                   onPressed: () {
@@ -74,15 +79,21 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  Widget _buildFilterButton(IconData icon, VoidCallback onPressed) {
+  Widget _buildFilterButton(String text, VoidCallback onPressed) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 250),
       curve: Curves.easeInOut,
+      height: 50,
+      width: 110, // 버튼의 가로 넓이
       child: FloatingActionButton(
         onPressed: onPressed,
         mini: true,
         backgroundColor: Color(0xFFFFD67D),
-        child: Icon(icon, color: Colors.white),
+        child: Text(
+          text,
+          style: TextStyle(color: Colors.brown, fontSize: 18, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }
