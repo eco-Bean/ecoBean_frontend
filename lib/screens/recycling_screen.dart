@@ -1,13 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
-
 import 'package:ecobean_frontend/screens/upload_image_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'chatbot_screen.dart';
-import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
 
 
 class RecyclingScreen extends StatefulWidget {

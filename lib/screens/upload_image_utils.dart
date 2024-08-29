@@ -22,6 +22,7 @@ Future<String?> uploadImageAndGetResponse(XFile image) async {
     // 서버 응답 내용 확인
     final responseBody = await response.stream.bytesToString();
     print('Response Body: $responseBody');
+    print('image_path: ${image.path} ');
 
     if (response.statusCode == 200) {
       final decodedResponse = jsonDecode(responseBody);
