@@ -199,49 +199,47 @@ class _MyWidgetState extends State<StoreScreen> {
                         _showPopup('에코 말버릇 변경권', '1,000');
                       },
                       child: Container(
-                          width: double.infinity,
-                          margin: EdgeInsets.symmetric(horizontal: 20.0),
-                          padding: EdgeInsets.all(16.0),
-                          constraints: BoxConstraints(
-                            minHeight: 150,
+                        width: double.infinity,
+                        margin: EdgeInsets.symmetric(horizontal: 20.0),
+                        padding: EdgeInsets.all(16.0),
+                        constraints: BoxConstraints(
+                          minHeight: 150,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 255, 250, 200),
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                            ),
+                          ],
+                        ),
+                        child: Row(children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(40),
+                            child: Image.asset(
+                              'assets/images/icon.png',
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 255, 250, 200),
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.3),
-                                spreadRadius: 2,
-                                blurRadius: 5,
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Row(children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(40),
-                                child: Image.asset(
-                                  'assets/images/icon.png',
-                                  width: 100,
-                                  height: 100,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              SizedBox(width: 30),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(' 에코 말버릇 변경권'),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    ' 챗봇 에코의 말버릇을 \n원하는 말로 변경할 수 있어요!',
-                                    style: TextStyle(fontSize: 13),
-                                  )
-                                ],
+                          SizedBox(width: 30),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(' 에코 말버릇 변경권'),
+                              SizedBox(height: 10),
+                              Text(
+                                ' 챗봇 에코의 말버릇을 \n원하는 말로 변경할 수 있어요!',
+                                style: TextStyle(fontSize: 13),
                               )
-                            ]),
-                          ))),
+                            ],
+                          )
+                        ]),
+                      )),
                   SizedBox(height: 20),
                   GestureDetector(
                       onTap: () {
@@ -265,34 +263,31 @@ class _MyWidgetState extends State<StoreScreen> {
                               ),
                             ],
                           ),
-                          child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10.0),
-                              child: Row(
+                          child: Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(40),
+                                child: Image.asset(
+                                  'assets/images/change.png',
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              SizedBox(width: 30),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(40),
-                                    child: Image.asset(
-                                      'assets/images/change.png',
-                                      width: 100,
-                                      height: 100,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  SizedBox(width: 30),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(' 에코 외형 변경권'),
-                                      SizedBox(height: 10),
-                                      Text(
-                                        ' 챗봇 에코의 외형을 원하는\n외형으로 변경할 수 있어요!',
-                                        style: TextStyle(fontSize: 13),
-                                      )
-                                    ],
+                                  Text(' 에코 외형 변경권'),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    ' 챗봇 에코의 외형을 원하는\n외형으로 변경할 수 있어요!',
+                                    style: TextStyle(fontSize: 13),
                                   )
                                 ],
-                              )))),
+                              )
+                            ],
+                          ))),
                   SizedBox(height: 20),
                   GestureDetector(
                     onTap: () {
@@ -316,33 +311,30 @@ class _MyWidgetState extends State<StoreScreen> {
                           ),
                         ],
                       ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(40),
-                              child: Image.asset(
-                                'assets/images/ribbon.png',
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
+                      child: Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(40),
+                            child: Image.asset(
+                              'assets/images/ribbon.png',
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          SizedBox(width: 30),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(' 에코 치창 아이템 교환권'),
+                              SizedBox(height: 10),
+                              Text(
+                                ' 챗봇 에코를 꾸며줄 수 있는\n치장 아이템을 교환할 수 있어요!',
+                                style: TextStyle(fontSize: 13),
                               ),
-                            ),
-                            SizedBox(width: 30),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(' 에코 치창 아이템 교환권'),
-                                SizedBox(height: 10),
-                                Text(
-                                  ' 챗봇 에코를 꾸며줄 수 있는\n치장 아이템을 교환할 수 있어요!',
-                                  style: TextStyle(fontSize: 13),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ),
