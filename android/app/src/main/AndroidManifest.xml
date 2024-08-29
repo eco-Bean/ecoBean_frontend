@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
-        android:label="ecobean_frontend"
+        android:label="에코콩"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 
