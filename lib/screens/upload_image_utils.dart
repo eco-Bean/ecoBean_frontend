@@ -23,6 +23,7 @@ Future<String?> uploadImageAndGetResponse(XFile image) async {
     final responseBody = await response.stream.bytesToString();
     print('Response Body: $responseBody');
     print('image_path: ${image.path} ');
+    print(request.fields['rectcleImage']);
 
     if (response.statusCode == 200) {
       final decodedResponse = jsonDecode(responseBody);

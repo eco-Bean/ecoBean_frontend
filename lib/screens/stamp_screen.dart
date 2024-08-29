@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 class Stamp {
   final String title;
-  XFile? image; // 사진 저장할 필드
+  final int id;
+  XFile? image;
+  String? imageUrl;
 
-  Stamp(this.title, this.image);
+  Stamp(this.title, this.id, this.image, this.imageUrl);
 }
 
 class StampScreen extends StatefulWidget {
@@ -16,12 +21,12 @@ class StampScreen extends StatefulWidget {
 
 class _StampScreenState extends State<StampScreen> {
   final List<Stamp> _stamps = [
-    Stamp('이메일 삭제하기', null),
-    Stamp('개인손수건 사용하기', null),
-    Stamp('대중교통 이용하기', null),
-    Stamp('텀블러 사용하기', null),
-    Stamp('전자영수증 받기', null),
-    Stamp('전기,수소차 이용하기', null),
+    Stamp('이메일 삭제하기', 1, null, null),
+    Stamp('개인손수건 사용하기', 2, null, null),
+    Stamp('대중교통 이용하기', 3, null, null),
+    Stamp('텀블러 사용하기', 4, null, null),
+    Stamp('전자영수증 받기', 5, null, null),
+    Stamp('전기,수소차 이용하기', 6, null, null),
   ];
 
   final ImagePicker _picker = ImagePicker();
@@ -35,6 +40,41 @@ class _StampScreenState extends State<StampScreen> {
       setState(() {
         _stamps[index].image = pickedFile;
       });
+
+      await _uploadStampImage(index);
+    }
+  }
+
+  Future<void> _uploadStampImage(int index) async {
+    final XFile? image = _stamps[index].image;
+    if (image == null) return;
+
+    final url = Uri.parse('https://moodoodle.store/mypage/upload-challenge');
+    final request = http.MultipartRequest('POST', url);
+
+    request.fields['challengeId'] = _stamps[index].id.toString();
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'image',
+        image.path,
+        contentType: MediaType('image', 'jpeg'),
+      ),
+    );
+
+    try {
+      final response = await request.send();
+      final responseBody = await response.stream.bytesToString();
+      final decodedResponse = jsonDecode(responseBody);
+
+      if (response.statusCode == 200 && decodedResponse['success']) {
+        setState(() {
+          _stamps[index].imageUrl = decodedResponse['responseDto']['imageUrl'];
+        });
+      } else {
+        print('Failed to upload image: ${decodedResponse['error']}');
+      }
+    } catch (e) {
+      print('Exception during image upload: $e');
     }
   }
 
@@ -136,10 +176,12 @@ class _StampScreenState extends State<StampScreen> {
           CircleAvatar(
             radius: 40,
             backgroundColor: Colors.yellow[100],
-            backgroundImage: _stamps[index].image != null
+            backgroundImage: _stamps[index].imageUrl != null
+                ? NetworkImage(_stamps[index].imageUrl!)
+                : _stamps[index].image != null
                 ? FileImage(File(_stamps[index].image!.path))
                 : null,
-            child: _stamps[index].image == null
+            child: _stamps[index].image == null && _stamps[index].imageUrl == null
                 ? Icon(Icons.camera_alt, size: 40, color: Colors.black)
                 : null,
           ),
