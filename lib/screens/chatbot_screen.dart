@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ChatbotScreen extends StatefulWidget {
@@ -12,8 +13,10 @@ class ChatbotScreen extends StatefulWidget {
 }
 
 class _ChatbotScreenState extends State<ChatbotScreen> {
-  List<Map<String, String>> messages = []; // 채팅 메시지 리스트
-  TextEditingController _controller = TextEditingController(); // 텍스트 입력 컨트롤러
+  final List<Map<String, dynamic>> messages = []; // 채팅 메시지 리스트
+  final TextEditingController _controller =
+      TextEditingController(); // 텍스트 입력 컨트롤러
+  final ScrollController _scrollController = ScrollController(); // 스크롤 컨트롤러
   File? _image; // 선택된 이미지 파일
 
   @override
@@ -26,25 +29,80 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     setState(() {
       messages.add({'sender': 'echo', 'message': message});
     });
+    _scrollToBottom();
   }
 
-  Future<void> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
       });
+      await _uploadImage(pickedFile);
     }
+  }
+
+  Future<void> _uploadImage(XFile image) async {
+    final url = Uri.parse('https://moodoodle.store/chatting/question');
+    final request = http.MultipartRequest('POST', url);
+
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'chattingImage',
+        image.path,
+        contentType:
+            MediaType('image', 'jpeg'), // MediaType을 사용하여 contentType 지정
+      ),
+    );
+
+    // request에 추가된 모든 파일과 필드를 출력
+    print(
+        'Request Files: ${request.files.map((file) => file.filename).toList()}');
+
+    // final response = await request.send();
+
+    // if (response.statusCode == 200) {
+    //   final responseBody = await response.stream.bytesToString();
+    //   final decodedResponse = jsonDecode(responseBody);
+
+    //   if (decodedResponse['success']) {
+    //     final recycleAnswer = decodedResponse['responseDto']['recycleAnswer'];
+
+    //     // recyclingMethod에 서버 응답의 recycleAnswer 값을 할당
+    //     setState(() {
+    //       recyclingMethod = recycleAnswer;
+    //     });
+    //   } else {
+    //     // 에러 처리
+    //     print('Error: ${decodedResponse['error']}');
+    //   }
+    // } else {
+    //   print('Failed to upload image');
+    // }
+  }
+
+  void _removeImage() {
+    setState(() {
+      _image = null;
+    });
   }
 
   Future<void> _sendMessage() async {
     String message = _controller.text.trim();
-    if (message.isNotEmpty) {
+    if (message.isNotEmpty || _image != null) {
       setState(() {
-        messages.add({'sender': 'user', 'message': message});
+        messages.add({
+          'sender': 'user',
+          'message': message,
+          'image': _image,
+        });
+        print(_image);
+
         _controller.clear(); // 입력창 비우기
+        //_image = null; // 이미지 초기화
       });
+
+      _scrollToBottom();
 
       // AI 백엔드로 요청 전송 및 응답 처리
       try {
@@ -57,21 +115,25 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   }
 
   Future<String> _getAIResponse(String message) async {
-    String url =
-        'https://moodoodle.store/chatting/question'; // 서버 URL을 여기에 입력하세요.
+    String url = 'https://moodoodle.store/chatting/question'; // 서버 URL
 
     var request = http.MultipartRequest('POST', Uri.parse(url));
     request.fields['chattingQuestion'] = message;
 
     if (_image != null) {
-      request.files.add(await http.MultipartFile.fromPath(
-        'chattingImage',
-        _image!.path,
-      ));
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'chattingImage',
+          _image!.path,
+          contentType:
+              MediaType('image', 'jpeg'), // MediaType을 사용하여 contentType 지정
+        ),
+      );
     } else {
-      // 이미지가 없을 때 빈 파일로 설정
       request.fields['chattingImage'] = '';
     }
+    print(
+        'Request Files: ${request.files.map((file) => file.filename).toList()}');
 
     try {
       var response = await request.send();
@@ -90,6 +152,16 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     } catch (e) {
       throw Exception('요청 실패: $e');
     }
+  }
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    });
   }
 
   @override
@@ -121,7 +193,8 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
           children: [
             Expanded(
               child: ListView.builder(
-                padding: EdgeInsets.all(10.0),
+                controller: _scrollController,
+                padding: const EdgeInsets.all(10.0),
                 itemCount: messages.length,
                 itemBuilder: (context, index) {
                   final message = messages[index];
@@ -130,30 +203,48 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (isEcho) ...[
-                        CircleAvatar(
+                        const CircleAvatar(
                           backgroundImage:
                               AssetImage('assets/images/icon.png'), // 에코의 이미지
                           radius: 20,
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                       ],
                       Flexible(
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 10),
-                          margin: EdgeInsets.symmetric(vertical: 5),
+                          margin: const EdgeInsets.symmetric(vertical: 5),
                           decoration: BoxDecoration(
-                            color:
-                                isEcho ? Colors.grey[200] : Color(0xFFFFD67D),
+                            color: isEcho
+                                ? Colors.grey[200]
+                                : const Color(0xFFFFD67D),
                             borderRadius: BorderRadius.circular(15),
                           ),
-                          child: Text(
-                            message['message']!,
-                            style: TextStyle(fontSize: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (message['image'] != null)
+                                Container(
+                                  margin:
+                                      const EdgeInsets.only(top: 5, bottom: 5),
+                                  child: Image.file(
+                                    message['image'],
+                                    height: 150,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              if (message['message'] != null &&
+                                  message['message']!.isNotEmpty)
+                                Text(
+                                  message['message']!,
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                            ],
                           ),
                         ),
                       ),
-                      if (!isEcho) SizedBox(width: 10),
+                      if (!isEcho) const SizedBox(width: 10),
                     ],
                     mainAxisAlignment: isEcho
                         ? MainAxisAlignment.start
@@ -162,8 +253,42 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                 },
               ),
             ),
+            if (_image != null)
+              Align(
+                child: Container(
+                  alignment: Alignment.topCenter, // 왼쪽 상단에 위치
+
+                  decoration: BoxDecoration(
+                      color: const Color.fromARGB(1, 0, 0, 0).withOpacity(0.3)),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10), // 모서리 굴곡
+
+                        child: Image.file(
+                          _image!,
+                          height: 150, // 원하는 너비 설정
+                          fit: BoxFit.contain, // 비율을 유지하면서 크기를 맞춤
+                        ),
+                      ),
+                      IconButton(
+                        padding: const EdgeInsets.only(bottom: 25),
+                        icon:
+                            const Icon(Icons.cancel, color: Color(0xFFFFD67D)),
+                        onPressed: _removeImage,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            SizedBox(height: 10),
             Padding(
-              padding: const EdgeInsets.only(left: 20, bottom: 25, right: 5),
+              padding: const EdgeInsets.only(left: 15, bottom: 25, right: 5),
               child: Row(
                 children: [
                   Expanded(
@@ -176,7 +301,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Colors.grey, // 포커스 시 기본 색상으로 설정
                             width: 1.0,
                           ),
@@ -185,12 +310,36 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.image,
-                        color: Color(0xFFFFD67D)), // 이미지 선택 버튼
-                    onPressed: _pickImage,
+                    icon: const Icon(Icons.image, color: Color(0xFFFFD67D)),
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) => Wrap(
+                          children: [
+                            ListTile(
+                              leading: const Icon(Icons.camera_alt),
+                              title: const Text('카메라로 촬영'),
+                              onTap: () {
+                                Navigator.of(context).pop();
+                                _pickImage(ImageSource.camera);
+                              },
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.photo_album),
+                              title: const Text('갤러리에서 선택'),
+                              onTap: () {
+                                Navigator.of(context).pop();
+                                _pickImage(ImageSource.gallery);
+                              },
+                            ),
+                            SizedBox(height: 80),
+                          ],
+                        ),
+                      );
+                    },
                   ),
                   IconButton(
-                    icon: Icon(Icons.send, color: Color(0xFFFFD67D)),
+                    icon: const Icon(Icons.send, color: Color(0xFFFFD67D)),
                     onPressed: _sendMessage,
                   ),
                 ],

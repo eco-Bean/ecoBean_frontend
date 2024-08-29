@@ -306,8 +306,7 @@ class _MainScreenState extends State<MainScreen> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage(
-                          'assets/images/event.png'),
+                      image: AssetImage('assets/images/event.png'),
                       fit: BoxFit.cover),
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
@@ -333,7 +332,6 @@ class _MainScreenState extends State<MainScreen> {
             icon: IconButton(
               icon: Icon(Icons.camera_alt, color: Color(0xFF401D1D)),
               onPressed: _openCamera,
-
             ),
             label: '카메라',
           ),
@@ -352,9 +350,7 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(
             icon: IconButton(
               icon: Icon(Icons.home, color: Color(0xFF401D1D)),
-              onPressed: () {
-
-              },
+              onPressed: () {},
             ),
             label: '홈',
           ),
