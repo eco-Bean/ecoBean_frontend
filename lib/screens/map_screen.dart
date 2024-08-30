@@ -12,6 +12,62 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   bool _isExpanded = false; // 필터 버튼이 눌렸는지 상태를 추적
+  void _showPopup(NMarker marker) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Color(0xFFFFFCF8),
+          title: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: Text(
+                  marker.info.id,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Color(0xFF401D1D)),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(height: 50), // 텍스트와 아이콘 사이의 간격
+              Icon(
+                Icons.store, // 시장 아이콘
+                size: 60,
+                color: Color(0xFFFFD67D),
+              ),
+              SizedBox(height: 20),
+              Text(
+                "지역상품을 이용하는 것도 탄소중립을 실천하는 행위에요!",
+                style: TextStyle(fontSize: 16, color: Color(0xFF401D1D)),
+                textAlign: TextAlign.center,
+              )
+            ],
+          ),
+          content: Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Text(
+              "주소\n충청북도 청주시 상당구 석교동 60-4",
+              style: TextStyle(fontSize: 16, color: Color(0xFF401D1D)),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // 팝업 창 닫기
+                  },
+                  child: Text('닫기'),
+                ),
+              ],
+            )
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +92,14 @@ class _MapScreenState extends State<MapScreen> {
                 initialCameraPosition: NCameraPosition(
                     target: NLatLng(36.63581, 127.4913), zoom: 14)),
             onMapReady: (controller) {
+              final marker = NMarker(
+                  id: "육거리 종합시장", position: NLatLng(36.627830, 127.488453));
+              controller.addOverlay(marker);
+
+              marker.setOnTapListener((NMarker marker) {
+                // 마커를 클릭했을 때 실행할 코드
+                _showPopup(marker);
+              });
               print("네이버 맵 로딩됨!");
             },
           ),
