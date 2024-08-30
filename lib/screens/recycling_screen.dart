@@ -155,7 +155,9 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
                 children: [
                   ElevatedButton.icon(
                     onPressed: _openCamera,
-                    icon: Icon(Icons.camera_alt),
+                    icon: Icon(Icons.camera_alt,
+                      size: 18, // 아이콘 크기를 줄였습니다.
+                    ),
                     label: Text(
                       '사진 재업로드',
                       style: TextStyle(
@@ -178,7 +180,9 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
                         ),
                       );
                     },
-                    icon: Icon(Icons.chat_bubble_outline),
+                    icon: Icon(Icons.chat_bubble_outline,
+                      size: 18, // 아이콘 크기를 줄였습니다.
+                    ),
                     label: Text(
                       '챗봇에게 물어보기',
                       style: TextStyle(

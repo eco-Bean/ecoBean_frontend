@@ -8,7 +8,7 @@
     <application
         android:label="에코콩"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/appicon">
 
         <activity
             android:name=".MainActivity"
