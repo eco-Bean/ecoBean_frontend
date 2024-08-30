@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 
@@ -13,6 +15,7 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var map;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -28,7 +31,10 @@ class _MapScreenState extends State<MapScreen> {
       body: Stack(
         children: [
           NaverMap(
-            options: const NaverMapViewOptions(),
+            options: NaverMapViewOptions(
+                //var jeju = new naver.maps.LatLng(33.3590628, 126.534361);
+                initialCameraPosition: NCameraPosition(
+                    target: NLatLng(36.63581, 127.4913), zoom: 14)),
             onMapReady: (controller) {
               print("네이버 맵 로딩됨!");
             },
