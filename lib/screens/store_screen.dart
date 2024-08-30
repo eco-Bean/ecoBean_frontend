@@ -22,14 +22,14 @@ class _MyWidgetState extends State<StoreScreen> {
               padding: const EdgeInsets.only(top: 15.0),
               child: Text(
                 title,
+                style: TextStyle(
+                    color: Color(0xFF401D1D), fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               )),
           content: Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: Text(pay,
-                style: TextStyle(
-                  fontSize: 16,
-                ),
+                style: TextStyle(fontSize: 16, color: Color(0xFF401D1D)),
                 textAlign: TextAlign.center),
           ),
           actions: [
@@ -63,7 +63,7 @@ class _MyWidgetState extends State<StoreScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.brown),
+          icon: Icon(Icons.arrow_back, color: Color(0xFF401D1D)),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -71,7 +71,7 @@ class _MyWidgetState extends State<StoreScreen> {
         title: Text(
           '상점 페이지',
           style: TextStyle(
-            color: Colors.brown,
+            color: Color(0xFF401D1D),
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -134,7 +134,7 @@ class _MyWidgetState extends State<StoreScreen> {
                         Text(
                           '탄소저리가',
                           style: TextStyle(
-                            color: Colors.brown,
+                            color: Color(0xFF401D1D),
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),
@@ -156,7 +156,7 @@ class _MyWidgetState extends State<StoreScreen> {
                         Text(
                           '1,000',
                           style: TextStyle(
-                            color: Colors.brown,
+                            color: Color(0xFF401D1D),
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),
@@ -230,11 +230,15 @@ class _MyWidgetState extends State<StoreScreen> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(' 에코 말버릇 변경권'),
+                              Text(
+                                ' 에코 말버릇 변경권',
+                                style: TextStyle(color: Color(0xFF401D1D)),
+                              ),
                               SizedBox(height: 10),
                               Text(
                                 ' 챗봇 에코의 말버릇을 \n원하는 말로 변경할 수 있어요!',
-                                style: TextStyle(fontSize: 13),
+                                style: TextStyle(
+                                    fontSize: 13, color: Color(0xFF401D1D)),
                               )
                             ],
                           )
@@ -278,11 +282,15 @@ class _MyWidgetState extends State<StoreScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(' 에코 외형 변경권'),
+                                  Text(
+                                    ' 에코 외형 변경권',
+                                    style: TextStyle(color: Color(0xFF401D1D)),
+                                  ),
                                   SizedBox(height: 10),
                                   Text(
                                     ' 챗봇 에코의 외형을 원하는\n외형으로 변경할 수 있어요!',
-                                    style: TextStyle(fontSize: 13),
+                                    style: TextStyle(
+                                        fontSize: 13, color: Color(0xFF401D1D)),
                                   )
                                 ],
                               )
@@ -326,11 +334,15 @@ class _MyWidgetState extends State<StoreScreen> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(' 에코 치창 아이템 교환권'),
+                              Text(
+                                ' 에코 치창 아이템 교환권',
+                                style: TextStyle(color: Color(0xFF401D1D)),
+                              ),
                               SizedBox(height: 10),
                               Text(
                                 ' 챗봇 에코를 꾸며줄 수 있는\n치장 아이템을 교환할 수 있어요!',
-                                style: TextStyle(fontSize: 13),
+                                style: TextStyle(
+                                    fontSize: 13, color: Color(0xFF401D1D)),
                               ),
                             ],
                           ),

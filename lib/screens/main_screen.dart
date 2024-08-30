@@ -26,55 +26,55 @@ class _MainScreenState extends State<MainScreen> {
     final pickedFile = await _picker.pickImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
-        // 팝업 띄우기
-        showDialog(
-          context: context,
-          barrierDismissible: false, // 팝업 바깥을 터치해도 닫히지 않도록 설정
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xFFFFFAC8),
-              content: Row(
-                children: [
-                  CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.brown),
+      // 팝업 띄우기
+      showDialog(
+        context: context,
+        barrierDismissible: false, // 팝업 바깥을 터치해도 닫히지 않도록 설정
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Color(0xFFFFFAC8),
+            content: Row(
+              children: [
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF401D1D)),
+                ),
+                SizedBox(width: 20),
+                Expanded(
+                  child: Text(
+                    '에코가 열심히 분석해드릴게요.\n잠시만 기다려 주세요!',
+                    style: TextStyle(color: Color(0xFF401D1D)),
                   ),
-                  SizedBox(width: 20),
-                  Expanded(
-                    child: Text(
-                      '에코가 열심히 분석해드릴게요.\n잠시만 기다려 주세요!',
-                      style: TextStyle(color: Colors.brown),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-
-        try {
-          final recycleAnswer = await uploadImageAndGetResponse(pickedFile);
-
-          // 팝업 닫기
-          Navigator.of(context).pop();
-
-          // 팝업이 완전히 닫힌 후에 라우팅 수행
-          await Future.delayed(Duration(milliseconds: 300)); // 지연 추가
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => RecyclingScreen(
-                capturedImage: pickedFile,
-                recycleAnswer: recycleAnswer,
-              ),
+                ),
+              ],
             ),
           );
-        } catch (e) {
-          // 에러 처리
-          Navigator.of(context).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('이미지 업로드에 실패했습니다. 다시 시도해 주세요.')),
-          );
-        }
+        },
+      );
+
+      try {
+        final recycleAnswer = await uploadImageAndGetResponse(pickedFile);
+
+        // 팝업 닫기
+        Navigator.of(context).pop();
+
+        // 팝업이 완전히 닫힌 후에 라우팅 수행
+        await Future.delayed(Duration(milliseconds: 300)); // 지연 추가
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RecyclingScreen(
+              capturedImage: pickedFile,
+              recycleAnswer: recycleAnswer,
+            ),
+          ),
+        );
+      } catch (e) {
+        // 에러 처리
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('이미지 업로드에 실패했습니다. 다시 시도해 주세요.')),
+        );
+      }
     }
   }
 
@@ -97,7 +97,7 @@ class _MainScreenState extends State<MainScreen> {
         title: Text(
           '에코콩',
           style: TextStyle(
-            color: Colors.brown,
+            color: Color(0xFF401D1D),
             fontWeight: FontWeight.bold,
             fontSize: 24,
           ),
@@ -106,7 +106,7 @@ class _MainScreenState extends State<MainScreen> {
         actions: [
           Builder(
             builder: (context) => IconButton(
-              icon: Icon(Icons.menu, color: Colors.brown),
+              icon: Icon(Icons.menu, color: Color(0xFF401D1D)),
               onPressed: () {
                 Scaffold.of(context).openEndDrawer();
               },
@@ -143,7 +143,6 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                     ),
                   ),
-
                   Positioned(
                     bottom: 0,
                     right: 0,
@@ -173,7 +172,7 @@ class _MainScreenState extends State<MainScreen> {
               Text(
                 '탄소저리가',
                 style: TextStyle(
-                  color: Colors.brown,
+                  color: Color(0xFF401D1D),
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                 ),
@@ -280,7 +279,7 @@ class _MainScreenState extends State<MainScreen> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Color(0xFF401D1D),
               ),
             ),
             SizedBox(height: 10),
@@ -308,9 +307,7 @@ class _MainScreenState extends State<MainScreen> {
                   children: [
                     Text(
                       dailyMission1,
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
+                      style: TextStyle(fontSize: 18, color: Color(0xFF401D1D)),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 10),
@@ -331,7 +328,7 @@ class _MainScreenState extends State<MainScreen> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Color(0xFF401D1D),
               ),
             ),
             SizedBox(height: 10),
@@ -355,9 +352,7 @@ class _MainScreenState extends State<MainScreen> {
               child: Center(
                 child: Text(
                   knowledgeText,
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
+                  style: TextStyle(fontSize: 18, color: Color(0xFF401D1D)),
                   textAlign: TextAlign.center,
                 ),
               ),

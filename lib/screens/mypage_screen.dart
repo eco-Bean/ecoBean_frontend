@@ -47,7 +47,7 @@ class _MypageScreen extends State<MypageScreen> {
         ),
         title: Text(
           '마이페이지',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Color(0xFF401D1D)),
         ),
         centerTitle: true,
       ),
@@ -63,7 +63,7 @@ class _MypageScreen extends State<MypageScreen> {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Color(0xFF401D1D),
               ),
             ),
             SizedBox(height: 30),
@@ -75,17 +75,16 @@ class _MypageScreen extends State<MypageScreen> {
                     radius: 50,
                     backgroundColor: Colors.grey[300],
                     backgroundImage:
-                    _image != null ? FileImage(File(_image!.path)) : null,
+                        _image != null ? FileImage(File(_image!.path)) : null,
                     child: _image == null
                         ? Icon(
-                      Icons.person,
-                      size: 60,
-                      color: Colors.white,
-                    )
+                            Icons.person,
+                            size: 60,
+                            color: Colors.white,
+                          )
                         : null,
                   ),
                 ),
-
                 Positioned(
                   bottom: 0,
                   right: 0,
@@ -97,7 +96,7 @@ class _MypageScreen extends State<MypageScreen> {
                       child: Icon(
                         Icons.camera_alt,
                         size: 20,
-                        color: Colors.black,
+                        color: Color(0xFF401D1D),
                       ),
                     ),
                   ),

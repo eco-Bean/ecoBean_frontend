@@ -175,7 +175,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.brown),
+            icon: Icon(Icons.arrow_back, color: Color(0xFF401D1D)),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -183,7 +183,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
           title: Text(
             '에코',
             style: TextStyle(
-              color: Colors.brown,
+              color: Color(0xFF401D1D),
               fontWeight: FontWeight.bold,
             ),
           ),

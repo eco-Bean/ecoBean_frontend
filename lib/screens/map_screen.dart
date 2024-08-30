@@ -156,7 +156,7 @@ class _MapScreenState extends State<MapScreen> {
           child: Text(
             text,
             style: TextStyle(
-              color: Colors.brown,
+              color: Color(0xFF401D1D),
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),

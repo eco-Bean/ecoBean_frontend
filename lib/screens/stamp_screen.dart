@@ -84,9 +84,9 @@ class _StampScreenState extends State<StampScreen> {
       appBar: AppBar(
         backgroundColor: Color(0xFFFFFCF8),
         elevation: 0,
-        title: Text('마이페이지', style: TextStyle(color: Colors.black)),
+        title: Text('마이페이지', style: TextStyle(color: Color(0xFF401D1D))),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: Color(0xFF401D1D)),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -105,7 +105,7 @@ class _StampScreenState extends State<StampScreen> {
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: Colors.brown,
+                    color: Color(0xFF401D1D),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -113,7 +113,7 @@ class _StampScreenState extends State<StampScreen> {
                   '탄소중립 나무를 채워보세요',
                   style: TextStyle(
                     fontSize: 20,
-                    color: Colors.black,
+                    color: Color(0xFF401D1D),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -179,11 +179,12 @@ class _StampScreenState extends State<StampScreen> {
             backgroundImage: _stamps[index].imageUrl != null
                 ? NetworkImage(_stamps[index].imageUrl!)
                 : _stamps[index].image != null
-                ? FileImage(File(_stamps[index].image!.path))
-                : null,
-            child: _stamps[index].image == null && _stamps[index].imageUrl == null
-                ? Icon(Icons.camera_alt, size: 40, color: Colors.black)
-                : null,
+                    ? FileImage(File(_stamps[index].image!.path))
+                    : null,
+            child:
+                _stamps[index].image == null && _stamps[index].imageUrl == null
+                    ? Icon(Icons.camera_alt, size: 40, color: Color(0xFF401D1D))
+                    : null,
           ),
           SizedBox(height: 5),
           Text(_stamps[index].title, style: TextStyle(fontSize: 14)),
