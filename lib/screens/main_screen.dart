@@ -1,4 +1,5 @@
 import 'package:ecobean_frontend/screens/chatbot_screen.dart';
+import 'package:ecobean_frontend/screens/deco_screen.dart';
 import 'package:ecobean_frontend/screens/recycling_screen.dart';
 import 'package:ecobean_frontend/screens/stamp_screen.dart';
 import 'package:ecobean_frontend/screens/map_screen.dart';
@@ -408,13 +409,6 @@ class _MainScreenState extends State<MainScreen> {
           ),
           BottomNavigationBarItem(
             icon: IconButton(
-              icon: Icon(Icons.home, color: Color(0xFF401D1D)),
-              onPressed: () {},
-            ),
-            label: '홈',
-          ),
-          BottomNavigationBarItem(
-            icon: IconButton(
               icon: Icon(Icons.map, color: Color(0xFF401D1D)),
               onPressed: () {
                 Navigator.push(
@@ -424,6 +418,18 @@ class _MainScreenState extends State<MainScreen> {
               },
             ),
             label: '지도',
+          ),
+          BottomNavigationBarItem(
+            icon: IconButton(
+              icon: Icon(Icons.auto_awesome, color: Color(0xFF401D1D)),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DecoScreen()),
+                );
+              },
+            ),
+            label: '에코 꾸미기',
           ),
           BottomNavigationBarItem(
             icon: IconButton(
