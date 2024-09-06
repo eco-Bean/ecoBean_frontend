@@ -4,7 +4,6 @@ import 'package:ecobean_frontend/screens/recycling_screen.dart';
 import 'package:ecobean_frontend/screens/stamp_screen.dart';
 import 'package:ecobean_frontend/screens/map_screen.dart';
 import 'package:ecobean_frontend/screens/store_screen.dart';
-import 'package:ecobean_frontend/screens/store_screen.dart';
 import 'package:ecobean_frontend/screens/upload_image_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -53,22 +52,33 @@ class _MainScreenState extends State<MainScreen> {
       );
 
       try {
-        final recycleAnswer = await uploadImageAndGetResponse(pickedFile);
+        final response = await uploadImageAndGetResponse(pickedFile);
 
-        // 팝업 닫기
-        Navigator.of(context).pop();
+        if (response != null) {
+          final recycleAnswer = response['recycleAnswer'];  // 'recycleAnswer' 값
+          final recycleItem = response['recycleItem'];      // 'recycleItem' 값
 
-        // 팝업이 완전히 닫힌 후에 라우팅 수행
-        await Future.delayed(Duration(milliseconds: 300)); // 지연 추가
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => RecyclingScreen(
-              capturedImage: pickedFile,
-              recycleAnswer: recycleAnswer,
+          // 팝업 닫기
+          Navigator.of(context).pop();
+
+          // 팝업이 완전히 닫힌 후에 라우팅 수행
+          await Future.delayed(Duration(milliseconds: 300)); // 지연 추가
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RecyclingScreen(
+                capturedImage: pickedFile,
+                recycleAnswer: recycleAnswer,  // 'recycleAnswer' 전달
+                recycleItem: recycleItem,      // 'recycleItem' 전달
+              ),
             ),
-          ),
-        );
+          );
+        } else {
+          Navigator.of(context).pop();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('이미지 업로드에 실패했습니다. 다시 시도해 주세요.')),
+          );
+        }
       } catch (e) {
         // 에러 처리
         Navigator.of(context).pop();
@@ -241,7 +251,6 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
               Spacer(),
-
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: GestureDetector(

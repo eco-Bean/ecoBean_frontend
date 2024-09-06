@@ -8,8 +8,9 @@ import 'chatbot_screen.dart';
 class RecyclingScreen extends StatefulWidget {
   final XFile? capturedImage;
   final String? recycleAnswer;
+  final String? recycleItem;
 
-  RecyclingScreen({Key? key, this.capturedImage, this.recycleAnswer})
+  RecyclingScreen({Key? key, this.capturedImage, this.recycleAnswer, this.recycleItem})
       : super(key: key);
 
   @override
@@ -20,16 +21,15 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
   // 메인스크린에서 촬영한 사진을 저장하는 변수
   XFile? _capturedImage;
   String? recyclingMethod;
+  String? recycleItemName; //분리수거 할 품목이름
 
   @override
   void initState() {
     super.initState();
     _capturedImage = widget.capturedImage;
-    recyclingMethod = widget.recycleAnswer ?? '정보를 불러올 수 없습니다.';
+    recyclingMethod = widget.recycleAnswer ?? '분석하지 못했어요.';
+    recycleItemName = widget.recycleItem ?? '버리는 물건의 이름';
   }
-
-  // 데이터베이스에서 가져온 텍스트
-  String itemDescription = '버리는 품목 이름';
 
   // 카메라 열기 함수
   Future<void> _openCamera() async {
@@ -56,42 +56,44 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
 
   //이미지 업로드 함수
   Future<void> _uploadImageAndSetResponse(XFile image) async {
-    // 팝업 띄우기
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Color(0xFFFFFAC8),
-          content: Row(
-            children: [
-              CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF401D1D)),
+    //팝업 열기
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: Color(0xFFFFFAC8),
+        content: Row(
+          children: [
+            CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF401D1D)),
+            ),
+            SizedBox(width: 20),
+            Expanded(
+              child: Text(
+                '에코가 열심히 분석해드릴게요.\n잠시만 기다려 주세요!',
+                style: TextStyle(color: Color(0xFF401D1D)),
               ),
-              SizedBox(width: 20),
-              Expanded(
-                child: Text(
-                  '에코가 열심히 분석해드릴게요.\n잠시만 기다려 주세요!',
-                  style: TextStyle(color: Color(0xFF401D1D)),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
+            ),
+          ],
+        ),
+      );
+    },
+  );
 
-    final recycleAnswer = await uploadImageAndGetResponse(image);
+  final response = await uploadImageAndGetResponse(image);
 
-    // 팝업 닫기
-    Navigator.of(context).pop();
+//팝업 닫기
+  Navigator.of(context).pop();
 
-    if (recycleAnswer != null) {
-      setState(() {
-        recyclingMethod = recycleAnswer;
-      });
-    }
+  if (response != null) {
+    setState(() {
+      recyclingMethod = response['recycleAnswer'];
+      recycleItemName = response['recycleItem'];
+    });
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -128,9 +130,8 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
                   )
                 : Placeholder(fallbackHeight: 200, fallbackWidth: 200),
             SizedBox(height: 20),
-            // 데이터베이스에서 가져온 텍스트
             Text(
-              '[ $itemDescription ]',
+              recycleItemName ?? '버리는 물건의 이름',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -154,7 +155,7 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
                   onPressed: _openCamera,
                   icon: Icon(
                     Icons.camera_alt,
-                    size: 18, // 아이콘 크기를 줄였습니다.
+                    size: 18,
                   ),
                   label: Text(
                     '사진 재업로드',
@@ -180,7 +181,7 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
                   },
                   icon: Icon(
                     Icons.chat_bubble_outline,
-                    size: 18, // 아이콘 크기를 줄였습니다.
+                    size: 18,
                   ),
                   label: Text(
                     '챗봇에게 물어보기',
@@ -232,7 +233,7 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        recyclingMethod ?? "",
+                        recyclingMethod ?? "에코가 분리수거 방법을 찾지 못했어요. 사진을 다시 업로드 해주세요!",
                         style: TextStyle(
                           fontSize: 18,
                           color: Color(0xFF401D1D),

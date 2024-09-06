@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 
-// 이미지 업로드 함수
-Future<String?> uploadImageAndGetResponse(XFile image) async {
+//이미지 업로드 함수
+Future<Map<String, String>?> uploadImageAndGetResponse(XFile image) async {
   try {
     final url = Uri.parse('https://moodoodle.store/chatting/recycle');
     final request = http.MultipartRequest('POST', url);
@@ -29,14 +29,20 @@ Future<String?> uploadImageAndGetResponse(XFile image) async {
       final decodedResponse = jsonDecode(responseBody);
 
       if (decodedResponse['success']) {
-        return decodedResponse['responseDto']['recycleAnswer'] as String?;
+        final recycleAnswer = decodedResponse['responseDto']['recycleAnswer'] as String;
+        final recycleItem = decodedResponse['responseDto']['recycleItem'] as String;
+
+        return {
+          'recycleAnswer': recycleAnswer,
+          'recycleItem': recycleItem,
+        };
       } else {
-        print('Error: ${decodedResponse['error']}');
+        print('Error: ${decodedResponse['error']?.toString()}');
         return null;
       }
     } else {
       print('Failed to upload image with status code: ${response.statusCode}');
-      print('Response Body: $responseBody');  // 오류 발생 시 응답 내용 출력
+      print('Response Body: $responseBody');
       return null;
     }
   } catch (e) {
