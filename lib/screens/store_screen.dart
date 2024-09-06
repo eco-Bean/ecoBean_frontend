@@ -324,7 +324,7 @@ class _MyWidgetState extends State<StoreScreen> {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(40),
                             child: Image.asset(
-                              'assets/images/ribbon.png',
+                              'assets/images/ribboneco.png',
                               width: 100,
                               height: 100,
                               fit: BoxFit.cover,

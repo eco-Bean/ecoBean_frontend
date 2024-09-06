@@ -14,6 +14,8 @@ class _MapScreenState extends State<MapScreen> {
   bool _isExpanded = false; // 필터 버튼 상태 추적
   List<dynamic> locations = []; // API로 받은 위치 정보 리스트
   bool isLoading = true; // 데이터 로딩 상태
+  String filteredCategory = ''; // 필터 상태를 추적할 변수
+  NaverMapController? _mapController; // NaverMapController 인스턴스
 
   @override
   void initState() {
@@ -34,7 +36,6 @@ class _MapScreenState extends State<MapScreen> {
 
         setState(() {
           locations = data['responseDto']['location']; // 위치 데이터 저장
-          print(locations[2]['name']); // 디버깅용 출력
           isLoading = false; // 로딩 완료
         });
       } else {
@@ -51,8 +52,41 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
+  // 필터 버튼 클릭 시 필터 상태 업데이트 및 마커 업데이트
+  void _updateFilter(String category) {
+    setState(() {
+      filteredCategory = category;
+      // 필터링된 마커만 다시 추가
+      _addMarkers();
+    });
+  }
+
+  // 마커 추가
+  void _addMarkers() {
+    if (_mapController == null) return;
+
+    _mapController!.clearOverlays(); // 기존 마커 제거
+
+    for (var location in locations) {
+      if (filteredCategory == '' || location['category'] == filteredCategory) {
+        final marker = NMarker(
+          id: location['name'],
+          position: NLatLng(location['latitude'], location['longitude']),
+        );
+        _mapController!.addOverlay(marker);
+
+        // 마커 클릭 시 팝업 호출
+        marker.setOnTapListener((NMarker marker) {
+          _showPopup(marker, location['description'], location['address'],
+              location['category']);
+        });
+      }
+    }
+  }
+
   // 마커 클릭 시 팝업 표시
-  void _showPopup(NMarker marker, String description, String address) {
+  void _showPopup(
+      NMarker marker, String description, String address, String category) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -70,11 +104,30 @@ class _MapScreenState extends State<MapScreen> {
                 ),
               ),
               const SizedBox(height: 50), // 텍스트와 아이콘 사이 간격
-              const Icon(
-                Icons.store, // 예시 아이콘
-                size: 60,
-                color: Color(0xFFFFD67D),
-              ),
+              if (category == '전자영수증')
+                const Icon(
+                  Icons.receipt_long, // 예시 아이콘
+                  size: 60,
+                  color: Color(0xFFFFD67D),
+                ),
+              if (category == '시장')
+                const Icon(
+                  Icons.shopping_bag, // 예시 아이콘
+                  size: 60,
+                  color: Color(0xFFFFD67D),
+                ),
+              if (category == '친환경' || category == '리필스테이션&친환경 매장')
+                const Icon(
+                  Icons.eco, // 예시 아이콘
+                  size: 60,
+                  color: Color(0xFFFFD67D),
+                ),
+              if (category == '텀블러')
+                const Icon(
+                  Icons.coffee_sharp, // 예시 아이콘
+                  size: 60,
+                  color: Color(0xFFFFD67D),
+                ),
               const SizedBox(height: 20),
               Text(
                 description, // 마커 설명
@@ -133,23 +186,8 @@ class _MapScreenState extends State<MapScreen> {
                         target: const NLatLng(36.63581, 127.4913), zoom: 14),
                   ),
                   onMapReady: (controller) {
-                    for (var location in locations) {
-                      final marker = NMarker(
-                        id: location['name'],
-                        position: NLatLng(
-                            location['latitude'], location['longitude']),
-                      );
-                      controller.addOverlay(marker);
-
-                      // 마커 클릭 시 팝업 호출
-                      marker.setOnTapListener((NMarker marker) {
-                        _showPopup(
-                          marker,
-                          location['description'],
-                          location['address'],
-                        );
-                      });
-                    }
+                    _mapController = controller; // 컨트롤러 저장
+                    _addMarkers(); // 마커 추가
                     print("네이버 맵 로딩 완료!");
                   },
                 ),
@@ -161,15 +199,19 @@ class _MapScreenState extends State<MapScreen> {
                     children: [
                       if (_isExpanded) ...[
                         _buildFilterButton('친환경 매장', () {
-                          print('친환경 매장 클릭됨');
+                          _updateFilter('친환경');
                         }),
                         const SizedBox(height: 10),
                         _buildFilterButton('시장', () {
-                          print('시장 클릭됨');
+                          _updateFilter('시장');
                         }),
                         const SizedBox(height: 10),
                         _buildFilterButton('전자 영수증', () {
-                          print('전자 영수증 클릭됨');
+                          _updateFilter('전자영수증');
+                        }),
+                        const SizedBox(height: 10),
+                        _buildFilterButton('전체 보기', () {
+                          _updateFilter('');
                         }),
                       ],
                       const SizedBox(height: 10),
@@ -181,7 +223,7 @@ class _MapScreenState extends State<MapScreen> {
                         },
                         backgroundColor: const Color(0xFFFFD67D),
                         child: Icon(
-                          _isExpanded ? Icons.close : Icons.filter_alt,
+                          _isExpanded ? Icons.close : Icons.tune,
                         ),
                       ),
                     ],
