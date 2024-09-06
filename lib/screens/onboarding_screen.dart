@@ -16,9 +16,7 @@ class OnboardingScreen extends StatelessWidget {
                 'assets/images/environment-icon2.png',
                 height: 100,
               ),
-
               SizedBox(height: 10),
-
               Text(
                 '탄소중립\n지속 가능성을 손 안에 담다',
                 textAlign: TextAlign.center,
@@ -28,9 +26,7 @@ class OnboardingScreen extends StatelessWidget {
                   color: Color(0xFF401D1D),
                 ),
               ),
-
               SizedBox(height: 20),
-
               Text(
                 '에코콩',
                 textAlign: TextAlign.center,

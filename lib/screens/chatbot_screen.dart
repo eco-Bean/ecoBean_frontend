@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:ecobean_frontend/screens/deco_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -203,11 +204,20 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (isEcho) ...[
-                        const CircleAvatar(
-                          backgroundImage:
-                              AssetImage('assets/images/icon.png'), // 에코의 이미지
-                          radius: 20,
-                        ),
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DecoScreen(),
+                                ),
+                              );
+                            },
+                            child: const CircleAvatar(
+                              backgroundImage: AssetImage(
+                                  'assets/images/icon.png'), // 에코의 이미지
+                              radius: 20,
+                            )),
                         const SizedBox(width: 10),
                       ],
                       Flexible(
