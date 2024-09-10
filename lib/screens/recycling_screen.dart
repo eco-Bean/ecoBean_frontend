@@ -131,7 +131,7 @@ class _RecyclingScreenState extends State<RecyclingScreen> {
                 : Placeholder(fallbackHeight: 200, fallbackWidth: 200),
             SizedBox(height: 20),
             Text(
-              '[${recycleItemName ?? '버리는 물건의 이름'}]',
+              recycleItemName ?? '버리는 물건의 이름',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
